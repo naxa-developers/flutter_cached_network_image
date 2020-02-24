@@ -1,7 +1,13 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
 typedef Widget ImageWidgetBuilder(BuildContext context, ImageProvider imageProvider);
 typedef Widget PlaceholderWidgetBuilder(BuildContext context, String url);
@@ -302,9 +308,16 @@ class CachedNetworkImageState extends State<CachedNetworkImage> with TickerProvi
                 holder: holder,
                 child: KeyedSubtree(
                   key: Key(holder.image.file.path),
-                  child: _image(
-                    context,
-                    FileImage(holder.image.file),
+                  child: FutureBuilder<Widget>(
+                    future: _image(context, FileImage(holder.image.file),
+                        isSVG: holder.image.originalUrl.endsWith('.svg')),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                      if (snapshot.hasData) {
+                        return snapshot.data;
+                      }
+                      return Container();
+                    },
                   ),
                 )));
           }
@@ -330,21 +343,35 @@ class CachedNetworkImageState extends State<CachedNetworkImage> with TickerProvi
     return widget.cacheManager ?? DefaultCacheManager();
   }
 
-  Widget _image(BuildContext context, ImageProvider imageProvider) {
-    return widget.imageBuilder != null
-        ? widget.imageBuilder(context, imageProvider)
-        : Image(
-            image: imageProvider,
-            fit: widget.fit,
-            width: widget.width,
-            height: widget.height,
-            alignment: widget.alignment,
-            repeat: widget.repeat,
-            color: widget.color,
-            colorBlendMode: widget.colorBlendMode,
-            matchTextDirection: widget.matchTextDirection,
-            filterQuality: widget.filterQuality,
-          );
+  Future<Widget> _image(BuildContext context, ImageProvider imageProvider,
+      {isSVG = false, filePath}) async {
+    if (widget.imageBuilder != null && !isSVG) {
+      return widget.imageBuilder(context, imageProvider);
+    } else if (isSVG) {
+      FileImage fileImage = imageProvider;
+      final String rawSvg = await fileImage.file.readAsString();
+      return SvgPicture.string(
+        rawSvg,
+        height: widget.height,
+        width: widget.width,
+        color: widget.color,
+        matchTextDirection: widget.matchTextDirection,
+        fit: widget.fit,
+      );
+    } else {
+      return Image(
+        image: imageProvider,
+        fit: widget.fit,
+        width: widget.width,
+        height: widget.height,
+        alignment: widget.alignment,
+        repeat: widget.repeat,
+        color: widget.color,
+        colorBlendMode: widget.colorBlendMode,
+        matchTextDirection: widget.matchTextDirection,
+        filterQuality: widget.filterQuality,
+      );
+    }
   }
 
   Widget _placeholder(BuildContext context) {

@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
             CachedNetworkImage(
               imageUrl: 'http://via.placeholder.com/300x300',
               placeholder: (context, url) => CircleAvatar(
-                backgroundColor: Colors.amber,
+                backgroundColor: Colors.red,
                 radius: 150,
               ),
               imageBuilder: (context, image) => CircleAvatar(
@@ -133,6 +133,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 errorWidget: (context, url, error) => const Icon(Icons.error),
                 fadeOutDuration: const Duration(seconds: 1),
                 fadeInDuration: const Duration(seconds: 3),
+              ),
+            ),
+            _sizedContainer(
+              CachedNetworkImage(
+                imageUrl:
+                    'https://www.svgrepo.com/download/48239/user-online.svg',
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                fadeOutDuration: const Duration(seconds: 1),
+                fadeInDuration: const Duration(seconds: 3),
+                width: 24.0,
+                height: 24.0,
+                fit: BoxFit.contain,
+                color: Colors.red,
               ),
             ),
           ],

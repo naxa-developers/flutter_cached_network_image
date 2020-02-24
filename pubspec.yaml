@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_cache_manager: "^1.1.3"
+  flutter_svg: ^0.17.1
 
 dev_dependencies:
   pedantic: "^1.8.0+1"
