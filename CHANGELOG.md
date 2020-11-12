@@ -1,3 +1,49 @@
+## [2.3.3] - 2020-10-16
+* Support for flutter_cache_manager 2.x.x.
+
+## [2.3.2] - 2020-09-10
+* Fixed placeholders and error widgets, those are not always centered anymore.
+* Evict an image from ImageCache if image fails to load.
+* Added method to evict an image from memory and disk cache.
+
+## [2.3.1] - 2020-08-25
+* Fixed fading when the image has no placeholder or progress indicator.
+
+## [2.3.0] - 2020-08-25
+* Improved image loading by using OctoImage. OctoImage uses the native callbacks of the ImageProvider instead of
+ loading the file when the ImageWidget is build the first time.
+* Set minimal Flutter version to 1.20.0; first compatible stable version.
+* Added choice for rendering of images on web. Defaults to standard HTML ImageElement, but gives the option to use a
+ custom HTTP Get for headers and skia support.
+* Use a MultiImageStreamCompleter for when an image that is available in the cache is updated. 
+
+## [2.3.0-rc] - 2020-06-20
+* Added choice for rendering of images on web. Defaults to standard HTML ImageElement, but gives the option to use a
+ custom HTTP Get for headers and skia support.
+* Use a MultiImageStreamCompleter for when an image that is available in the cache is updated. 
+* Increase minimal version of Flutter to 1.19.0-2.0.pre (currently requires Beta) due to an error listener bug.
+
+## [2.3.0-beta.1] - 2020-05-28
+* Improved web support: support for headers and skia.
+
+## [2.3.0-beta] - 2020-05-20
+* Rewrote image widget by using OctoImage.
+
+## [2.2.0+1] - 2020-05-05
+* Fix ImageProvider not using provided headers.
+
+## [2.2.0] - 2020-04-30
+* Upgrades on CachedNetworkImageProvider:
+    * Support for download progress.
+    * Basic web support (no caching).
+
+## [2.1.0+1] - 2020-04-10
+* Update minimal Dart sdk version
+
+## [2.1.0] - 2020-04-10
+* Update CacheManager
+* Added option for progress indicator
+
 ## [2.0.0] - 2019-12-31
 * Public release of 2.0 version
 
